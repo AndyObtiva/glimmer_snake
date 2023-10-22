@@ -18,6 +18,11 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'bundler/setup'
 Bundler.require(:default, :development)
+
+require 'puts_debuggerer'
+
+$LOAD_PATH.append(File.expand_path(File.join(__dir__, '..')))
+
 RSpec.configure do |config|
   # The following ensures rspec tests that instantiate and set Glimmer DSL controls in @target get cleaned after
   config.after do

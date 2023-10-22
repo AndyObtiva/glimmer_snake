@@ -18,7 +18,7 @@ Juwelier::Tasks.new do |gem|
   gem.homepage = "http://github.com/AndyObtiva/glimmer_snake"
   gem.license = "MIT"
   gem.summary = %Q{Glimmer Snake}
-  gem.description = %Q{Glimmer Snake game desktop application built with Glimmer DSL for LibUI. Gem ships with a glimmer_snake binary script for launching the game.}
+  gem.description = %Q{Glimmer Snake game cross-platform desktop GUI application built with Glimmer DSL for LibUI to run on Mac, Windows, and Linux. Gem ships with glimmer_snake script for launching game.}
   gem.email = "andy.am@gmail.com"
   gem.authors = ["Andy Maleh"]
 

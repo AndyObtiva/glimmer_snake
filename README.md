@@ -1,4 +1,4 @@
-# <img alt="Glimmer Tetris Icon" src="https://raw.githubusercontent.com/AndyObtiva/glimmer_snake/master/icons/linux/Glimmer%20Snake.png" height=85 /> Glimmer Snake 1.0.0
+# <img alt="Glimmer Tetris Icon" src="https://raw.githubusercontent.com/AndyObtiva/glimmer_snake/master/icons/linux/Glimmer%20Snake.png" height=85 /> Glimmer Snake 1.0.1
 ## [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=40 /> Glimmer DSL for LibUI Application](https://github.com/AndyObtiva/glimmer-dsl-libui)
 [![Gem Version](https://badge.fury.io/rb/glimmer_snake.svg)](http://badge.fury.io/rb/glimmer_snake)
 
@@ -28,7 +28,7 @@ Mac | Windows | Linux
 ----|---------|------
 ![glimmer-dsl-libui-mac-snake.png](/screenshots/glimmer-dsl-libui-mac-snake.png) ![glimmer-dsl-libui-mac-snake-game-over.png](/screenshots/glimmer-dsl-libui-mac-snake-game-over.png) | ![glimmer-dsl-libui-windows-snake.png](/screenshots/glimmer-dsl-libui-windows-snake.png) ![glimmer-dsl-libui-windows-snake-game-over.png](/screenshots/glimmer-dsl-libui-windows-snake-game-over.png) | ![glimmer-dsl-libui-linux-snake.png](/screenshots/glimmer-dsl-libui-linux-snake.png) ![glimmer-dsl-libui-linux-snake-game-over.png](/screenshots/glimmer-dsl-libui-linux-snake-game-over.png)
 
-The goal is for the green snake to eat the red apple and to survive for as long as possible. Every time it eats an apple, it grows by 1 block (the size of the apple). If the snake hits its own body (especially after enlargement), it dies.
+The goal of the game is for the green snake to eat the red apple and to survive for as long as possible. The snake always moves forward at a fixed speed. You can change the direction of the snake using arrow keys (Up is North, Right is East, Down is South, Left is West). Every time the snake eats an apple, it grows by 1 block (the size of the apple), and the apple regenerates somewhere else. If the snake hits its own body (especially after enlargement), it dies. Pressing the spacebar pauses/unpauses the game.
 
 The game remembers the highest score by storing in `~/.glimmer-snake`. You can delete that file if you want to reset the highest score.
 
