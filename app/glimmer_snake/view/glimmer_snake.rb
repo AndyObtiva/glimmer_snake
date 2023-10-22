@@ -1,100 +1,88 @@
-require 'glimmer_snake/model/greeting'
+require 'glimmer_snake/model/grid'
 
 class GlimmerSnake
   module View
     class GlimmerSnake
       include Glimmer::LibUI::Application
     
+      CELL_SIZE = 15
+      SNAKE_MOVE_DELAY = 0.1
           
-      ## Add options like the following to configure CustomWindow by outside consumers
-      #
-      # options :title, :background_color
-      # option :width, default: 320
-      # option :height, default: 240
-  
-      ## Use before_body block to pre-initialize variables to use in body and
-      #  to setup application menu
-      #
       before_body do
-        @greeting = Model::Greeting.new
-        
-        menu('File') {
-          menu_item('Preferences...') {
-            on_clicked do
-              display_preferences_dialog
-            end
-          }
-          
-          # Enables quitting with CMD+Q on Mac with Mac Quit menu item
-          quit_menu_item if OS.mac?
-        }
-        menu('Help') {
-          if OS.mac?
-            about_menu_item {
-              on_clicked do
-                display_about_dialog
-              end
-            }
-          end
-          
-          menu_item('About') {
-            on_clicked do
-              display_about_dialog
-            end
-          }
-        }
+        @game = Model::Game.new
+        @grid = Presenter::Grid.new(@game)
+        @game.start
+        @keypress_queue = []
       end
   
-      ## Use after_body block to setup observers for controls in body
-      #
-      # after_body do
-      #
-      # end
+      after_body do
+        register_observers
+      end
   
-      ## Add control content inside custom window body
-      ## Top-most control must be a window or another custom window
-      #
       body {
         window {
-          # Replace example content below with custom window content
-          content_size 240, 240
-          title 'Glimmer Snake'
+          # data-bind window title to game score, converting it to a title string on read from the model
+          title <= [@game, :score, on_read: -> (score) {"Snake (Score: #{@game.score})"}]
+          content_size @game.width * CELL_SIZE, @game.height * CELL_SIZE
+          resizable false
           
-          margined true
-          
-          label {
-            text <= [@greeting, :text]
+          vertical_box {
+            padded false
+            
+            @game.height.times do |row|
+              horizontal_box {
+                padded false
+                
+                @game.width.times do |column|
+                  area {
+                    square(0, 0, CELL_SIZE) {
+                      fill <= [@grid.cells[row][column], :color] # data-bind square fill to grid cell color
+                    }
+                    
+                    on_key_up do |area_key_event|
+                      if area_key_event[:key] == ' '
+                        @game.toggle_pause
+                      else
+                        @keypress_queue << area_key_event[:ext_key]
+                      end
+                    end
+                  }
+                end
+              }
+            end
           }
         }
       }
   
-      def display_about_dialog
-        message = "Glimmer Snake #{VERSION}\n\n#{LICENSE}"
-        msg_box('About', message)
+      def register_observers
+        observe(@game, :over) do |game_over|
+          Glimmer::LibUI.queue_main do
+            if game_over
+              msg_box('Game Over!', "Score: #{@game.score} | High Score: #{@game.high_score}")
+              @game.start
+            end
+          end
+        end
+        
+        Glimmer::LibUI.timer(SNAKE_MOVE_DELAY) do
+          unless @game.paused? || @game.over?
+            process_queued_keypress
+            @game.snake.move
+          end
+        end
       end
       
-      def display_preferences_dialog
-        window {
-          title 'Preferences'
-          content_size 200, 100
-          
-          margined true
-          
-          vertical_box {
-            padded true
-            
-            label('Greeting:') {
-              stretchy false
-            }
-            
-            radio_buttons {
-              stretchy false
-              
-              items Model::Greeting::GREETINGS
-              selected <=> [@greeting, :text_index]
-            }
-          }
-        }.show
+      def process_queued_keypress
+        # key press queue ensures one turn per snake move to avoid a double-turn resulting in instant death (due to snake illogically going back against itself)
+        key = @keypress_queue.shift
+        case [@game.snake.head.orientation, key]
+        in [:north, :right] | [:east, :down] | [:south, :left] | [:west, :up]
+          @game.snake.turn_right
+        in [:north, :left] | [:west, :down] | [:south, :right] | [:east, :up]
+          @game.snake.turn_left
+        else
+          # No Op
+        end
       end
     end
   end

@@ -18,13 +18,17 @@ Juwelier::Tasks.new do |gem|
   gem.homepage = "http://github.com/AndyObtiva/glimmer_snake"
   gem.license = "MIT"
   gem.summary = %Q{Glimmer Snake}
-  gem.description = %Q{Glimmer Snake}
+  gem.description = %Q{Glimmer Snake game desktop application built with Glimmer DSL for LibUI. Gem ships with a glimmer_snake binary script for launching the game.}
   gem.email = "andy.am@gmail.com"
   gem.authors = ["Andy Maleh"]
 
-  gem.files = Dir['VERSION', 'LICENSE.txt', 'app/**/*', 'bin/**/*', 'config/**/*', 'db/**/*', 'docs/**/*', 'fonts/**/*', 'icons/**/*', 'images/**/*', 'lib/**/*', 'script/**/*', 'sounds/**/*', 'videos/**/*']
+  gem.files = Dir['VERSION', 'TODO.md', 'CHANGELOG.md', 'glimmer_snake.gemspec', 'LICENSE.txt', 'app/**/*', 'bin/**/*', 'config/**/*', 'db/**/*', 'docs/**/*', 'fonts/**/*', 'icons/**/*', 'images/**/*', 'lib/**/*', 'script/**/*', 'sounds/**/*', 'videos/**/*']
   gem.require_paths = ['lib', 'app']
   gem.executables = ['glimmer_snake']
+  
+  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  gem.post_install_message = ["\nGlimmer Snake #{version} was installed!\nPlay by running:\n\nglimmer_snake\n\n"]
+  
   # dependencies defined in Gemfile
 end
 Juwelier::RubygemsDotOrgTasks.new
