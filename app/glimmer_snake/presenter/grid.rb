@@ -5,7 +5,7 @@ require_relative 'cell'
 class GlimmerSnake
   module Presenter
     class Grid
-      include Glimmer
+      include Glimmer # used only for observer support (`observe` method only, not GUI)
       
       attr_reader :game, :cells
       

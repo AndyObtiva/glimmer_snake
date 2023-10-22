@@ -1,4 +1,4 @@
-require 'glimmer_snake/model/grid'
+require 'glimmer_snake/presenter/grid'
 
 class GlimmerSnake
   module View
